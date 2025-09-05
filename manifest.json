@@ -1,0 +1,8 @@
+{
+  "name": "Rack Repair Survey",
+  "short_name": "Rack Survey",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ff6a00"
+}

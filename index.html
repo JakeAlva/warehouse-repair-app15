@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rack Repair Survey</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff6a00">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <h1>Rack Repair Survey</h1>
+    <div class="user-controls">
+      <label class="toggle">
+        <input type="checkbox" id="modeToggle">
+        <span>Dark mode</span>
+      </label>
+      <span id="currentUser"></span>
+      <button id="signOutBtn" class="btn small outline">Sign out</button>
+    </div>
+  </header>
+
+  <!-- Auth screen -->
+  <main id="authScreen" class="screen">
+    <div class="auth-card">
+      <div class="auth-tabs">
+        <button id="showSignIn" class="active">Sign In</button>
+        <button id="showSignUp">Create Account</button>
+      </div>
+      <form id="signInForm" class="auth-form">
+        <label>Email<input type="email" id="si_email" required></label>
+        <label>Password<input type="password" id="si_password" required></label>
+        <label class="row"><input type="checkbox" id="rememberMe" checked> Remember me</label>
+        <button class="btn primary" type="submit">Sign In</button>
+      </form>
+      <form id="signUpForm" class="auth-form hidden">
+        <div class="grid two">
+          <label>First name<input type="text" id="su_first" required></label>
+          <label>Last name<input type="text" id="su_last" required></label>
+        </div>
+        <div class="grid two">
+          <label>Email<input type="email" id="su_email" required></label>
+          <label>Phone<input type="tel" id="su_phone" placeholder="555-555-5555"></label>
+        </div>
+        <div class="grid two">
+          <label>Password<input type="password" id="su_password" required></label>
+          <label>Company (optional)<input type="text" id="su_company"></label>
+        </div>
+        <button class="btn primary" type="submit">Create Account</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- App screen -->
+  <main id="appScreen" class="screen hidden">
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="startTab">Start</button>
+      <button class="tab-btn" data-tab="framesTab">Add Frame</button>
+      <button class="tab-btn" data-tab="locationsTab">Locations</button>
+      <button class="tab-btn" data-tab="doneTab">Done</button>
+    </nav>
+
+    <!-- Start Tab -->
+    <section id="startTab" class="tab active">
+      <div class="grid two">
+        <label>Facility name<input id="facility_name" type="text" placeholder="e.g., McLane DC #123"></label>
+        <label>Facility address<textarea id="facility_address" rows="2" placeholder="Street, City, State, ZIP"></textarea></label>
+      </div>
+      <div class="grid three">
+        <label>Surveyor name<input id="surveyor_name" type="text" placeholder="Your name"></label>
+        <label>Date<input id="survey_date" type="date"></label>
+        <label>Notes<textarea id="survey_notes" rows="2" placeholder="Any general notes..."></textarea></label>
+      </div>
+    </section>
+
+    <!-- Frames Tab -->
+    <section id="framesTab" class="tab">
+      <form id="frameForm" class="card">
+        <div class="grid four">
+          <label>Depth (Inches)
+            <input id="f_depth" type="number" step="0.01" min="0" placeholder="e.g., 48">
+          </label>
+
+          <label>Width of Front Post (Inches)
+            <select id="f_post_width">
+              <option value="" disabled selected>Select...</option>
+              <option>3"</option>
+              <option>3-3/16"</option>
+              <option>4"</option>
+              <option>C3</option>
+              <option>C4</option>
+              <option>C5</option>
+            </select>
+          </label>
+
+          <label>Depth of Front Post (Inches)
+            <select id="f_post_depth">
+              <option value="" disabled selected>Select...</option>
+              <option>4"</option>
+              <option>3"</option>
+              <option>1-5/8"</option>
+              <option>C3</option>
+              <option>C4</option>
+              <option>C5</option>
+            </select>
+          </label>
+
+          <label>Backer Reinforcement Type P1
+            <select id="f_backer_p1">
+              <option value="" disabled selected>Select...</option>
+              <option>3"</option>
+              <option>1-5/8"</option>
+              <option>C3</option>
+              <option>C4</option>
+              <option>C5</option>
+            </select>
+          </label>
+
+          <label>Backer Reinforcement Type P2
+            <select id="f_backer_p2">
+              <option value="" disabled selected>Select...</option>
+              <option>3"</option>
+              <option>1-5/8"</option>
+              <option>C3</option>
+              <option>C4</option>
+              <option>C5</option>
+            </select>
+          </label>
+
+          <label>Frame Style (Manufacturer)
+            <select id="f_style_brand">
+              <option value="" disabled selected>Select brand...</option>
+              <option>Interlake</option>
+              <option>Mecalux</option>
+              <option>Unarco</option>
+              <option>Speedrack</option>
+              <option>Penco</option>
+              <option>Keystone</option>
+              <option>Konstant</option>
+              <option>Frazier</option>
+              <option>Advanced</option>
+              <option>Republic</option>
+              <option>Ridg-U-Rak</option>
+              <option>Steel King</option>
+              <option>Nucor</option>
+              <option>Frame Style Not Listed</option>
+            </select>
+          </label>
+
+          <label>Color
+            <input id="f_color" type="text" placeholder="e.g., Green RAL 6005">
+          </label>
+
+          <label>Hole Punch Style
+            <select id="f_punch_type">
+              <option value="" disabled selected>Select type...</option>
+              <option>Teardrop F (New Style)</option>
+              <option>Teardrop U (Old Style)</option>
+              <option>3&quot; T-Bolt</option>
+              <option>4&quot; T-Bolt (3/4&quot;)</option>
+              <option>4&quot; T-Bolt (1&quot;)</option>
+              <option>Slotted</option>
+              <option>Structural (4&quot; Vertical Hole Spacing)</option>
+              <option>Structural (2&quot; Vertical Hole Spacing)</option>
+              <option>Hole Punch Not Listed</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grid two">
+          <label>Frame Number
+            <div class="row">
+              <select id="f_number"></select>
+              <select id="f_suffix" disabled></select>
+            </div>
+            <span class="muted">Suffix (a, b, c…) enables automatically when you reuse a frame number.</span>
+          </label>
+          <div class="row end">
+            <button class="btn" type="reset" id="clearFrameBtn">Clear</button>
+            <button class="btn primary" type="button" id="addFrameBtn">Add Frame Type</button>
+          </div>
+        </div>
+
+        <div class="card sub">
+          <h3>Photos for this Frame Type</h3>
+          <div class="grid three">
+            <label>Front of Frame
+              <input id="photo_front" type="file" accept="image/*" capture="environment">
+              <img id="preview_front" class="preview" alt="Front preview">
+            </label>
+            <label>Side of Frame
+              <input id="photo_side" type="file" accept="image/*" capture="environment">
+              <img id="preview_side" class="preview" alt="Side preview">
+            </label>
+            <label>Close-Up of How Struts Attach to Frame
+              <input id="photo_struts" type="file" accept="image/*" capture="environment">
+              <img id="preview_struts" class="preview" alt="Struts preview">
+            </label>
+          </div>
+        </div>
+      </form>
+
+      <div class="card">
+        <h3>Saved Frame Types</h3>
+        <div id="frameList" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Locations Tab -->
+    <section id="locationsTab" class="tab">
+      <div class="sticky-beams card">
+        <h3>Beam Levels (stay for all entries)</h3>
+        <div class="grid four">
+          <label>Q (in)<input id="beam_Q" type="number" min="0" step="1"></label>
+          <label>R (in)<input id="beam_R" type="number" min="0" step="1"></label>
+          <label>S (in)<input id="beam_S" type="number" min="0" step="1"></label>
+          <label>T (in)<input id="beam_T" type="number" min="0" step="1"></label>
+        </div>
+        <p class="muted">These values persist while you log multiple damage locations.</p>
+      </div>
+
+      <form id="locForm" class="card">
+        <div class="grid four">
+          <label>Frame Type
+            <select id="loc_frame"></select>
+          </label>
+          <label>Location of damage
+            <input id="loc_where" type="text" placeholder="e.g., Aisle 5, Bay 17, Left Post">
+          </label>
+          <label>Type of repair
+            <select id="loc_type">
+              <option>EVL-S</option>
+              <option>EVL-D</option>
+              <option>BAD</option>
+              <option>BFL</option>
+            </select>
+          </label>
+          <label>Height of repair
+            <select id="loc_height"></select>
+          </label>
+        </div>
+
+        <div class="grid two">
+          <label>Horizontal struts needed
+            <select id="loc_hstruts">
+              <option>0</option><option>1</option><option>2</option><option>3</option>
+              <option>4</option><option>5</option><option>6</option>
+            </select>
+          </label>
+          <label>Diagonal struts needed
+            <select id="loc_dstruts">
+              <option>0</option><option>1</option><option>2</option><option>3</option>
+              <option>4</option><option>5</option><option>6</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="row end">
+          <button class="btn" type="reset">Clear</button>
+          <button class="btn primary" type="button" id="addLocationBtn">Add Location</button>
+        </div>
+      </form>
+
+      <div class="card">
+        <h3>Damage Locations</h3>
+        <div id="locList" class="list"></div>
+      </div>
+    </section>
+
+    <!-- Done Tab -->
+    <section id="doneTab" class="tab">
+      <div class="card">
+        <h3>Export & Reset</h3>
+        <div class="grid two">
+          <button class="btn primary" id="exportExcelBtn">Export to Excel (.xls)</button>
+          <button class="btn" id="exportJsonBtn">Export raw JSON</button>
+        </div>
+        <hr>
+        <button class="btn danger" id="newSurveyBtn">Start New Survey</button>
+        <p class="muted">Export your data before starting a new survey — this will clear all survey fields.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <small>© <span id="year"></span> Rack Repair Survey</small>
+  </footer>
+</body>
+</html>
